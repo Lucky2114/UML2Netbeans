@@ -12,6 +12,7 @@ namespace UML2Netbeans
         public Form1()
         {
             InitializeComponent();
+            comboBox2.SelectedIndex = 0;
 
         }
 
@@ -21,13 +22,19 @@ namespace UML2Netbeans
         bool screenshotTaken = false;
         private async void button1_ClickAsync(object sender, EventArgs e)
         {
+
             button1.Enabled = false;
             button2.Enabled = false;
             button3.Enabled = false;
             button4.Enabled = false;
             comboBox1.Enabled = false;
+            comboBox2.Enabled = false;
             OCR ocr = new OCR();
-            String textResult = await ocr.convertToTextAsync(imagePath);
+
+            String language = getLanguage();
+            
+
+            String textResult = await ocr.convertToTextAsync(imagePath, language);
 
             String finalText = optimizeText(textResult);
 
@@ -93,9 +100,23 @@ namespace UML2Netbeans
             button3.Enabled = true;
             button4.Enabled = true;
             comboBox1.Enabled = true;
+            comboBox2.Enabled = true;
 
         }
 
+        private String getLanguage()
+        {
+            String returnVal = "ger";
+            if (comboBox2.Text.Contains("Englisch"))
+            {
+                returnVal = "eng";
+            } else if (comboBox2.Text.Contains("Deutsch"))
+            {
+                returnVal = "ger";
+            }
+
+            return returnVal;
+        }
 
         public void cleanJSFileUp(String jsFilePath, String className)
         {

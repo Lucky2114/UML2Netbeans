@@ -12,7 +12,7 @@ namespace UML2Netbeans
 {
     class OCR
     {
-        public async Task<string> convertToTextAsync(String imagePath)
+        public async Task<string> convertToTextAsync(String imagePath, String language)
         {
             String apiKey = "237ec520dc88957";
             String textResult = "";
@@ -25,13 +25,15 @@ namespace UML2Netbeans
 
                 MultipartFormDataContent form = new MultipartFormDataContent();
                 form.Add(new StringContent(apiKey), "apikey"); //Added api key in form data
-                form.Add(new StringContent("ger"), "language");
+                form.Add(new StringContent(language), "language");
                 byte[] imageData = File.ReadAllBytes(imagePath);
                 form.Add(new ByteArrayContent(imageData, 0, imageData.Length), "image", "image.jpg");
 
                 HttpResponseMessage response = await httpClient.PostAsync("https://api.ocr.space/Parse/Image", form);
 
                 string strContent = await response.Content.ReadAsStringAsync();
+                MessageBox.Show(strContent);
+
 
                 Rootobject ocrResult = JsonConvert.DeserializeObject<Rootobject>(strContent);
 
