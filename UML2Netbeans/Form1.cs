@@ -104,7 +104,6 @@ namespace UML2Netbeans
             String rawJs = File.ReadAllText(jsFilePath);
             String cleanJs = jsPackage + initClass + rawJs + System.Environment.NewLine + "}";
             File.WriteAllText(jsFilePath, cleanJs);
-            //Test123
         }
 
         public String writeToJSFile(String genCode, String className)
