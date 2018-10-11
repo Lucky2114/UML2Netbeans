@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UML2Netbeans", "UML2Netbeans\UML2Netbeans.csproj", "{C565D859-DDCB-4C2E-BC75-A735EA9864CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C565D859-DDCB-4C2E-BC75-A735EA9864CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C565D859-DDCB-4C2E-BC75-A735EA9864CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C565D859-DDCB-4C2E-BC75-A735EA9864CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C565D859-DDCB-4C2E-BC75-A735EA9864CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1C5650C-BD02-4E75-B76C-EB6C3CF1E675}
+	EndGlobalSection
+EndGlobal
