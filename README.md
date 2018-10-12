@@ -1,7 +1,7 @@
 # UML2Netbeans
 
 This Programm converts UML-Classdiagrams into a Neatbeans Project using only an image of the class. 
-Warning! I made this Converter based on the Class Diagrams we get from our School (BBB IT-School). Using your own or other Class Diagrams is experimental and may not succeed.
+Warning! I made this Converter based on the Class Diagrams we get from our School (BBB IT-School). Using your own or other Class Diagrams is experimental and may not work.
 
 This Converter is very basic.
 
