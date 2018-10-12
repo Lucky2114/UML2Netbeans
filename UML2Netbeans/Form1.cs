@@ -22,6 +22,12 @@ namespace UML2Netbeans
         bool screenshotTaken = false;
         private async void button1_ClickAsync(object sender, EventArgs e)
         {
+            if (imagePath.Equals("") || netbeansPath.Equals(""))
+            {
+                MessageBox.Show("Bitte ein Netbeans-Projekt und ein Bild auswählen");
+                this.Show();
+            }
+
 
             button1.Enabled = false;
             button2.Enabled = false;
@@ -32,68 +38,71 @@ namespace UML2Netbeans
             OCR ocr = new OCR();
 
             String language = getLanguage();
-            
 
-            String textResult = await ocr.convertToTextAsync(imagePath, language);
-
-            String finalText = optimizeText(textResult);
-
-            String className = getClassName(finalText);
-            finalText = finalText.Replace(className + System.Environment.NewLine, "");
-
-
-
-            String[] publicAttribute = getPublicAttribute(finalText);
-            String[] privateAttribute = getPrivateAttribute(finalText);
-
-            String[] publicMethoden = getPublicMethoden(finalText);
-            String[] privateMethoden = getPrivateMethoden(finalText);
-
-
-            //JS Datei für alle PUBLIC ATTRIBUTE
-            for (int i = 0; i < publicAttribute.Length; i++)
+            if (!imagePath.Equals("") || !netbeansPath.Equals(""))
             {
+                String textResult = await ocr.convertToTextAsync(imagePath, language);
 
-                int typeOfAttribut = getTypeOfAttribut(publicAttribute[i]);
-                //0 Steht für die Art( 0 = Attribut, 1 = Methode ) 
-                String genCode = generateCode(publicAttribute[i], 0, typeOfAttribut, "public");
-                jsFilePath = writeToJSFile(genCode, className);
+                String finalText = optimizeText(textResult);
+
+
+                String className = getClassName(finalText);
+                finalText = finalText.Replace(className + System.Environment.NewLine, "");
+
+
+
+                String[] publicAttribute = getPublicAttribute(finalText);
+                String[] privateAttribute = getPrivateAttribute(finalText);
+
+                String[] publicMethoden = getPublicMethoden(finalText);
+                String[] privateMethoden = getPrivateMethoden(finalText);
+
+
+                //JS Datei für alle PUBLIC ATTRIBUTE
+                for (int i = 0; i < publicAttribute.Length; i++)
+                {
+
+                    int typeOfAttribut = getTypeOfAttribut(publicAttribute[i]);
+                    //0 Steht für die Art( 0 = Attribut, 1 = Methode ) 
+                    String genCode = generateCode(publicAttribute[i], 0, typeOfAttribut, "public");
+                    jsFilePath = writeToJSFile(genCode, className);
+                }
+
+                //JS Datei für alle PRIVATE ATTRIBUTE
+                for (int i = 0; i < privateAttribute.Length; i++)
+                {
+
+                    int typeOfAttribut = getTypeOfAttribut(privateAttribute[i]);
+                    //0 Steht für die Art( 0 = Attribut, 1 = Methode ) 
+                    String genCode = generateCode(privateAttribute[i], 0, typeOfAttribut, "private");
+                    jsFilePath = writeToJSFile(genCode, className);
+                }
+
+                //JS Datei für alle PUBLIC METHODEN
+                for (int i = 0; i < publicMethoden.Length; i++)
+                {
+                    int typeOfAttribut = getTypeOfAttribut(publicMethoden[i]);
+                    //0 Steht für die Art( 0 = Attribut, 1 = Methode ) 
+                    String genCode = generateCode(publicMethoden[i], 1, typeOfAttribut, "public");
+
+                    jsFilePath = writeToJSFile(genCode, className);
+                }
+
+
+
+                //JS Datei für alle PRIVATE METHODEN
+                for (int i = 0; i < privateMethoden.Length; i++)
+                {
+                    int typeOfAttribut = getTypeOfAttribut(privateMethoden[i]);
+                    //0 Steht für die Art( 0 = Attribut, 1 = Methode ) 
+                    String genCode = generateCode(privateMethoden[i], 1, typeOfAttribut, "private");
+
+                    jsFilePath = writeToJSFile(genCode, className);
+                }
+
+                cleanJSFileUp(jsFilePath, className);
+                MessageBox.Show("Fertig.");
             }
-
-            //JS Datei für alle PRIVATE ATTRIBUTE
-            for (int i = 0; i < privateAttribute.Length; i++)
-            {
-
-                int typeOfAttribut = getTypeOfAttribut(privateAttribute[i]);
-                //0 Steht für die Art( 0 = Attribut, 1 = Methode ) 
-                String genCode = generateCode(privateAttribute[i], 0, typeOfAttribut, "private");
-                jsFilePath = writeToJSFile(genCode, className);
-            }
-
-            //JS Datei für alle PUBLIC METHODEN
-            for (int i = 0; i < publicMethoden.Length; i++)
-            {
-                int typeOfAttribut = getTypeOfAttribut(publicMethoden[i]);
-                //0 Steht für die Art( 0 = Attribut, 1 = Methode ) 
-                String genCode = generateCode(publicMethoden[i], 1, typeOfAttribut, "public");
-
-                jsFilePath = writeToJSFile(genCode, className);
-            }
-
-
-
-            //JS Datei für alle PRIVATE METHODEN
-            for (int i = 0; i < privateMethoden.Length; i++)
-            {
-                int typeOfAttribut = getTypeOfAttribut(privateMethoden[i]);
-                //0 Steht für die Art( 0 = Attribut, 1 = Methode ) 
-                String genCode = generateCode(privateMethoden[i], 1, typeOfAttribut, "private");
-
-                jsFilePath = writeToJSFile(genCode, className);
-            }
-
-            cleanJSFileUp(jsFilePath, className);
-            MessageBox.Show("done");
 
             button1.Enabled = true;
             button2.Enabled = true;
@@ -110,7 +119,8 @@ namespace UML2Netbeans
             if (comboBox2.Text.Contains("Englisch"))
             {
                 returnVal = "eng";
-            } else if (comboBox2.Text.Contains("Deutsch"))
+            }
+            else if (comboBox2.Text.Contains("Deutsch"))
             {
                 returnVal = "ger";
             }
@@ -120,11 +130,18 @@ namespace UML2Netbeans
 
         public void cleanJSFileUp(String jsFilePath, String className)
         {
-            String jsPackage = "package " + comboBox1.Text + ";" + System.Environment.NewLine + System.Environment.NewLine;
-            String initClass = "public class " + className + " {" + System.Environment.NewLine + System.Environment.NewLine;
-            String rawJs = File.ReadAllText(jsFilePath);
-            String cleanJs = jsPackage + initClass + rawJs + System.Environment.NewLine + "}";
-            File.WriteAllText(jsFilePath, cleanJs);
+            try
+            {
+                String jsPackage = "package " + comboBox1.Text + ";" + System.Environment.NewLine + System.Environment.NewLine;
+                String initClass = "public class " + className + " {" + System.Environment.NewLine + System.Environment.NewLine;
+                String rawJs = File.ReadAllText(jsFilePath);
+                String cleanJs = jsPackage + initClass + rawJs + System.Environment.NewLine + "}";
+                File.WriteAllText(jsFilePath, cleanJs);
+            }
+            catch
+            {
+                MessageBox.Show("Entweder kein UML Diagramm, oder das Bild hat die Qualität einer Kartoffel.");
+            }
         }
 
         public String writeToJSFile(String genCode, String className)
@@ -265,13 +282,14 @@ namespace UML2Netbeans
                         combo += ", ";
                         combo = combo.Replace("»", "");
                     }
+                    combo = combo.Remove(combo.Length - 2); //Letzte zwei Zeichen entfernen.
                 }
                 catch
                 {
                     MessageBox.Show("Bist du sicher, dass das ein UML Diagramm ist?");
                 }
 
-                combo = combo.Remove(combo.Length - 2); //Letzte zwei Zeichen entfernen.
+
             }
 
 
@@ -540,7 +558,8 @@ namespace UML2Netbeans
             {
                 labelImageLoaded.Text = "Bild erfolgreich geladen";
                 labelImageLoaded.ForeColor = Color.FromArgb(0x56B548); //Grün
-            } else
+            }
+            else
             {
                 labelImageLoaded.Text = "Bild konnte nicht geladen werden";
                 labelImageLoaded.ForeColor = Color.FromArgb(0xC62D32); //Rot
