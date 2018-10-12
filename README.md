@@ -6,6 +6,8 @@ Warning! I made this Converter based on the Class Diagrams we get from our Schoo
 This Converter is very basic.
 
 How To Use:
+First make sure your screenshot / image of the class is in a good quality. 
+
 1. Load an Image of a CLASS. Not the whole diagram. A single class. You can do this by clicking "Bild auswählen", or by clicking on "Screenshot".
 2. Select a Netbeans Project. Important: Select the ROOT Folder of your Netbeans Project.
 3. Choose a Package. You can either choose a package that is listed, or type the name of a new one and it will create a new package.
