@@ -32,7 +32,6 @@ namespace UML2Netbeans
                 HttpResponseMessage response = await httpClient.PostAsync("https://api.ocr.space/Parse/Image", form);
 
                 string strContent = await response.Content.ReadAsStringAsync();
-                MessageBox.Show(strContent);
 
 
                 Rootobject ocrResult = JsonConvert.DeserializeObject<Rootobject>(strContent);

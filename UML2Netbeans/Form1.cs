@@ -397,6 +397,7 @@ namespace UML2Netbeans
             builder.Replace("double-", "double =");
             builder.Replace("int;", "int");
             builder.Replace("1ass", "lass");
+            builder.Replace("•", "+");
 
 
             string y = builder.ToString();
